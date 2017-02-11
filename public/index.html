@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>WebSocket</title>
+</head>
+
+<body>
+<p id="output"></p>
+
+<button id="button">Send message</button>
+
+<script>
+    var loc = window.location;
+    var uri = 'ws:';
+
+    if (loc.protocol === 'https:') {
+        uri = 'wss:';
+    }
+    uri += '//' + loc.host;
+    uri += loc.pathname + 'ws';
+
+    ws = new WebSocket(uri)
+
+    ws.onopen = function() {
+        console.log('Connected')
+    }
+
+    ws.onmessage = function(evt) {
+        var out = document.getElementById('output');
+        out.innerHTML += evt.data + '<br>';
+    }
+
+    document.getElementById('button').addEventListener("click", function(e) {
+        e.preventDefault();
+        ws.send('Hello, everybody!');
+    });
+
+</script>
+</body>
+
+</html>
